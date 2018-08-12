@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
 
         for (i in 1..10){
-            writeList.add(WriteItemData("오늘은 어쩐지 모르겠다",i.toString()))
+            writeList.add(WriteItemData("제목입니다~",i.toString()))
         }
 
         // adapter 생성
