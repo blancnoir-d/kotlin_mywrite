@@ -22,6 +22,7 @@ class WriteListAdapter(private val writeList: ArrayList<WriteItemData>): Recycle
 
     override fun onBindViewHolder(holder:WriteListAdapter.ViewHolder, position: Int) {
        holder.bindItems(writeList[position])
+        // 스낵바
        holder.itemView.setOnClickListener {view ->
            Snackbar.make(view,"테스트 입니다",Snackbar.LENGTH_LONG).setAction("OK", View.OnClickListener {
                holder.tvSubject.text = "ssssss"
@@ -42,3 +43,6 @@ class WriteListAdapter(private val writeList: ArrayList<WriteItemData>): Recycle
         }
     }
 }
+
+
+

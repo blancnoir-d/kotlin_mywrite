@@ -23,17 +23,20 @@ class InputWriteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_input_write)
 
+
         var inputText = et_input_write.text
 
+        // 저장 버튼
         bt_save_write.setOnClickListener {view ->
-            Toast.makeText(this,inputText,Toast.LENGTH_LONG).show()
-
-
-
+            //Toast.makeText(this,inputText,Toast.LENGTH_LONG).show()
+            httpPostJson(bt_save_write)
+            /**
+             * aaaaa 나옴 'ㅁ' echo 세상 신기
+             */
         }
 
         // fuel http
-        FuelManager.instance.basePath = "http://demosmushtaq.16mb.com"
+        FuelManager.instance.basePath = "http://vlogdiary.com"
 
 
     }
@@ -50,7 +53,7 @@ class InputWriteActivity : AppCompatActivity() {
         try {
             //progress!!.show()
             Fuel.get("api/get_sample.php").responseJson { request, response, result ->
-               // tvGetResponse!!.text = result.get().content
+
             }
         } catch (e: Exception) {
            // tvGetResponse!!.text = e.message
@@ -62,8 +65,8 @@ class InputWriteActivity : AppCompatActivity() {
     fun httpPostJson(view: View) {
         try {
            // progress!!.show()
-            Fuel.post("api/post_sample.php", listOf("version_index" to "1")).responseJson { request, response, result ->
-               // tvPostResponse!!.text = result.get().content
+            Fuel.post("kotlin/test.php", listOf("version_index" to "1")).responseJson { request, response, result ->
+                testText!!.text = result.get().content
             }
         } catch (e: Exception) {
           //  tvPostResponse!!.text = e.message
