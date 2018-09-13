@@ -8,15 +8,25 @@ import android.widget.Toast
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.fuel.core.FuelManager
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_input_write.*
+import io.reactivex.android.schedulers.AndroidSchedulers // rxAndroid ..
+import retrofit2.Retrofit
 import java.net.HttpURLConnection
 import java.net.URL
 
 
 class InputWriteActivity : AppCompatActivity() {
 
-    var urlConnection: HttpURLConnection? = null
 
+
+    // retrofit
+    private var disposable: Disposable? = null
+
+    private val wikiApiServe by lazy {
+        WikiApiService.create()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,17 +36,27 @@ class InputWriteActivity : AppCompatActivity() {
 
         var inputText = et_input_write.text
 
+        // fuel http
+        FuelManager.instance.basePath = "http://vlogdiary.com"
+
         // 저장 버튼
         bt_save_write.setOnClickListener {view ->
             //Toast.makeText(this,inputText,Toast.LENGTH_LONG).show()
-            httpPostJson(bt_save_write)
-            /**
-             * aaaaa 나옴 'ㅁ' echo 세상 신기
-             */
+
+            // fuel
+//            httpPostJson(bt_save_write)
+
+
+            // retrofit
+            if (et_input_write.text.toString().isNotEmpty()) {
+                beginSearch(et_input_write.text.toString())
+            }
         }
 
-        // fuel http
-        FuelManager.instance.basePath = "http://vlogdiary.com"
+
+
+
+
 
 
     }
@@ -51,28 +71,48 @@ class InputWriteActivity : AppCompatActivity() {
 
     fun httpGetJson(view: View) {
         try {
-            //progress!!.show()
             Fuel.get("api/get_sample.php").responseJson { request, response, result ->
-
             }
         } catch (e: Exception) {
-           // tvGetResponse!!.text = e.message
         } finally {
-           // progress!!.dismiss()
         }
     }
 
     fun httpPostJson(view: View) {
         try {
-           // progress!!.show()
-            Fuel.post("kotlin/test.php", listOf("version_index" to "1")).responseJson { request, response, result ->
+            Fuel.post("kotlin/test.php", listOf("version_index" to "1",
+                                                 "input_text" to  "TT" )).responseJson { request, response, result ->
                 testText!!.text = result.get().content
             }
         } catch (e: Exception) {
-          //  tvPostResponse!!.text = e.message
         } finally {
-           // progress!!.dismiss()
         }
     }
+
+
+
+    // retrofit
+    private fun beginSearch(searchString: String) {
+
+//        val retrofit = Retrofit .Builder().baseUrl("http://api.github.com").build()
+//        val service  = retrofit.create(WikiApiService::class.java)
+//        service.hitCountCheck("aaaa","aaaa","aaaaa","aaaaaa")
+
+
+        disposable = wikiApiServe.hitCountCheck("query", "json", "search", searchString)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { result -> testText.text = "${result.query.searchinfo.totalhits} result found" },
+                        { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
+                )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disposable?.dispose()
+    }
+
+
 
 }
