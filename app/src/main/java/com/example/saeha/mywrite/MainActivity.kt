@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,11 +17,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
     private val writeList = ArrayList<WriteItemData>()
 
 
+    private lateinit var tvWriteList: TextView
+
+    private val messageView : TextView by lazy {
+        // messageView의 첫 액세스에서 실행됩니다
+        findViewById(R.id.rv_main_write_list) as TextView
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        tvWriteList = findViewById(R.id.rv_main_write_list)
+
+
+
+
 
         val rvWriteList  = findViewById<RecyclerView>(R.id.rv_main_write_list)
         rvWriteList.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL,false)

@@ -59,3 +59,10 @@ dependencies {
 
 
 }
+
+// LayoutContainer 사용하기 : 코틀린 1.1.4버전 부터 지원하기 시작
+androidExtensions {
+
+    // 실험실 기능을 활성화합니다.
+    experimental = true
+}
