@@ -40,5 +40,29 @@ dependencies {
 
     // retrofit
     compile 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
+    // okhttp
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+
+    // Retrofit과는 관련없이 UI바인딩을 위해 사용하는 라이브러리입니다.
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
+
+    //fuel
+    implementation 'com.github.kittinunf.fuel:fuel-android:1.6.0'
+
+
+}
+
+// LayoutContainer 사용하기 : 코틀린 1.1.4버전 부터 지원하기 시작
+androidExtensions {
+
+    // 실험실 기능을 활성화합니다.
+    experimental = true
 }
